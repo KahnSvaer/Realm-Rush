@@ -50,11 +50,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667064684838876565, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
       propertyPath: m_Name
-      value: Tiles Straight Rode
+      value: Tiles Straight Road
       objectReference: {fileID: 0}
     - target: {fileID: 2519629020542942989, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
       propertyPath: m_Name
       value: RoadMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400594411774913531, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
+      propertyPath: isPlaceable
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8401048512925930876, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
       propertyPath: m_Mesh
