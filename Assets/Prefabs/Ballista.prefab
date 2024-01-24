@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Aimer: {fileID: 3144582324300694500}
+  weoponDamage: 1
+  ballistaRange: 20
 --- !u!1 &6131056645070147807
 GameObject:
   m_ObjectHideFlags: 0
