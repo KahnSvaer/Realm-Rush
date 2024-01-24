@@ -46,6 +46,7 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        GetComponent<Enemy>().StealGold();
         gameObject.SetActive(false); //Destory itself at the end of the path
     }
 }

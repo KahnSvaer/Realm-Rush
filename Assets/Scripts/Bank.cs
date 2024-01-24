@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bank : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] int startingFund = 150;
+    [SerializeField] int currentFund;
+    public int CurrentFund {get{return currentFund;}}
+
+    private void Awake() {
+        currentFund = startingFund;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Deposit(int amount)
     {
-        
+        currentFund += Mathf.Abs(amount);
+    }
+
+    public void Withdraw(int amount)
+    {
+        currentFund -= Mathf.Abs(amount);
+        if (currentFund < 0)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

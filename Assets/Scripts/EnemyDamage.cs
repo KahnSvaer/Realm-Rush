@@ -20,6 +20,7 @@ public class EnemyDamage : MonoBehaviour
         if (CurrantHitPoints<=0)
         {
             gameObject.SetActive(false);
+            GetComponent<Enemy>().RewardGold();
         }
     }
 }
