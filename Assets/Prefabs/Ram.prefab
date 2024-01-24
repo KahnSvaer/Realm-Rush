@@ -130,15 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f2b5d8117684b442afdfb9a94847667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  speed: 0.5
+  speed: 1
 --- !u!114 &3052342962446301030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672f913336d34c9428e17953baddc654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hitpoints: 5
+  MaxHitpoints: 5
+  CurrantHitPoints: 0
 --- !u!65 &4897366341170053904
 BoxCollider:
   m_ObjectHideFlags: 0

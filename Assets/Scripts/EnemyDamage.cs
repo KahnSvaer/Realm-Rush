@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour
 {   
-    [SerializeField] private float Hitpoints;
+    [SerializeField] private float MaxHitpoints = 5; //This would never change
+    private float CurrantHitPoints;
+
+    private void OnEnable() {
+        CurrantHitPoints = MaxHitpoints;
+    }
 
     private void OnParticleCollision(GameObject other) {
         float ParticleDamage = other.transform.parent.parent.GetComponent<WeoponShooter>().WeoponDamage;
-        if (Hitpoints > 0)
+        if (CurrantHitPoints > 0)
         {
-            Hitpoints -= ParticleDamage;
+            CurrantHitPoints -= ParticleDamage;
         }
-        if (Hitpoints<=0)
+        if (CurrantHitPoints<=0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

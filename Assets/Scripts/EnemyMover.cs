@@ -4,16 +4,34 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] List<Waypoint> waypoints;
     [SerializeField] [Range(0f, 5f)]float speed = 1f;
 
-    private void Start() {
-        StartCoroutine(DisplayWaypoints());
+    List<Waypoint> path = new();
+
+    private void OnEnable() {
+        FindPath();
+        ReturnToPath();
+        StartCoroutine(FollowPath());
     }
 
-    private IEnumerator DisplayWaypoints()
+    private void FindPath()
     {
-        foreach(Waypoint waypoint in waypoints)
+        path.Clear();
+        Transform pathHolder = GameObject.FindWithTag("Path").transform;
+        for (int i=0; i<pathHolder.childCount; i++)
+        {
+            path.Add(pathHolder.GetChild(i).GetComponent<Waypoint>());
+        }
+    }
+
+    private void ReturnToPath()
+    {
+        transform.position = path[0].transform.position;
+    }//TO make the start at the starting position of the path
+
+    private IEnumerator FollowPath()
+    {
+        foreach(Waypoint waypoint in path)
         {
             Vector3 startPosition = transform.position;
             Vector3 endPosition = waypoint.transform.position;
@@ -28,5 +46,6 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        gameObject.SetActive(false); //Destory itself at the end of the path
     }
 }

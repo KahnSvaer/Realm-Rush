@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tiles Straight Road
       objectReference: {fileID: 0}
+    - target: {fileID: 1667064684838876565, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2519629020542942989, guid: 7cf626d6c76c2c5418e495fa47c9c8e2, type: 3}
       propertyPath: m_Name
       value: RoadMesh
