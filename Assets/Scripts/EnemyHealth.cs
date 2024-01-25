@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDamage : MonoBehaviour
+[RequireComponent(typeof(Enemy))]
+public class EnemyHealth : MonoBehaviour
 {   
-    [SerializeField] private float MaxHitpoints = 5; //This would never change
+    [SerializeField] private float maxHitpoints = 5; //This would never change
+    [SerializeField] private float difficultyRamp = 1;
     private float CurrantHitPoints;
 
+    Enemy enemy;
+
     private void OnEnable() {
-        CurrantHitPoints = MaxHitpoints;
+        CurrantHitPoints = maxHitpoints;
+    }
+
+    private void Start() {
+        enemy = GetComponent<Enemy>();
     }
 
     private void OnParticleCollision(GameObject other) {
@@ -20,7 +28,8 @@ public class EnemyDamage : MonoBehaviour
         if (CurrantHitPoints<=0)
         {
             gameObject.SetActive(false);
-            GetComponent<Enemy>().RewardGold();
+            enemy.RewardGold();
+            maxHitpoints += difficultyRamp;
         }
     }
 }

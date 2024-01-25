@@ -6,8 +6,8 @@ public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyObject;
 
-    [SerializeField] float enemyInterval = 2;
-    [SerializeField] int enemyNumber = 5;
+    [SerializeField] [Range(0.1f,30f)]float spawnTimer = 2;
+    [SerializeField] [Range(0,50)]int enemyNumber = 5;
 
     private void Awake() {
         PopulateWaves();
@@ -30,7 +30,7 @@ public class ObjectPool : MonoBehaviour
         while(true) //Maybe remove later to make the wave function We may also combine waves too
         {
             ObjectEnableInPool();
-            yield return new WaitForSeconds(enemyInterval);
+            yield return new WaitForSeconds(spawnTimer);
         }
     }
 
