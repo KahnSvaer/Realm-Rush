@@ -8,21 +8,23 @@ using TMPro;
 public class CoordinateLabeler : MonoBehaviour
 {
     [SerializeField] Color defaultColor = Color.white;
-    [SerializeField] Color placedColor = Color.yellow;
-
+    [SerializeField] Color blockedColor = Color.red;
+    [SerializeField] Color pathColor = Color.yellow;
+    [SerializeField] Color exploredColor = new Color(1,.5f,0f);
 
     bool showCoords = true;
     public bool ShowCoords {get {return showCoords;}}
 
     TMP_Text label;
     Vector2Int coordinates;
-    Waypoint waypoint;
+
+    GridManager gridManager;
 
     private void Awake() 
     {
         label = GetComponent<TextMeshPro>();
         label.enabled = false;
-        waypoint = GetComponentInParent<Waypoint>();
+        gridManager = FindObjectOfType<GridManager>();
         DisplayCoordinates(); 
     }
     private void Update()
@@ -31,6 +33,7 @@ public class CoordinateLabeler : MonoBehaviour
         {
             DisplayCoordinates();
             UpdateName();
+            label.enabled = true;
         }
         SetLabelColor();
         ToggleLabels();
@@ -53,13 +56,25 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void SetLabelColor()
     {
-        if (waypoint.IsPlaceable)
+        if (gridManager == null){ return; }
+        Node node = gridManager.GetNode(coordinates);
+
+        if (node == null) {return;}
+        if (!node.isWalkable)
         {
-            label.color = defaultColor;
+            label.color = blockedColor;
+        }
+        else if(node.isPath)
+        {
+            label.color = exploredColor;
+        }
+        else if(node.isExplored)
+        {
+            label.color = pathColor;
         }
         else
         {
-            label.color = placedColor;
+            label.color = defaultColor;
         }
     }
 
