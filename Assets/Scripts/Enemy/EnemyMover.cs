@@ -13,8 +13,8 @@ public class EnemyMover : MonoBehaviour
     PathFinder pathFinder;
 
     private void OnEnable() {
-        FindPath();
-        ReturnToPath();
+        ReturnToPath(); //This should be first to spawn enemy at startCoords first
+        CalculatePath(true);
         StartCoroutine(FollowPath());
     }
 
@@ -23,20 +23,31 @@ public class EnemyMover : MonoBehaviour
         pathFinder = FindObjectOfType<PathFinder>();
     }
 
-    private void FindPath()
+    private void CalculatePath(bool atStart)
     {
+        Vector2Int coordinates;
+        if (atStart)
+        {
+            coordinates = pathFinder.StartCoordinate;
+        }
+        else
+        {
+            coordinates = gridManager.GetCoordinatesFromPosition(transform.position); 
+        }
+        StopAllCoroutines();
         path.Clear();
-        path = pathFinder.GetNewPath(); //This seems to be correct
+        path = pathFinder.GetNewPath(coordinates);
+        StartCoroutine(FollowPath());
     }
 
     private void ReturnToPath()
     {
         transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinate);
-    }//TO make the start at the starting position of the path
+    }
 
     private IEnumerator FollowPath()
     {
-        for (int i = 0; i < path.Count ; i++)
+        for (int i = 1; i < path.Count ; i++)
         {
             Vector3 startPosition = transform.position;
             Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);

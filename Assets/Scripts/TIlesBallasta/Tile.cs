@@ -41,7 +41,10 @@ public class Tile : MonoBehaviour
         {
             bool isPlaced = tower.CreateTower(tower, transform.position, ballistaParent);
             if (isPlaced)
+            {
                 gridManager.BlockNode(coordinates);
+                pathFinder.BroadCastPathChange();
+            }
         }
     }
 }

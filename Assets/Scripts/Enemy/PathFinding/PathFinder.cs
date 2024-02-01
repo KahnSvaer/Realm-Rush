@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class PathFinder : MonoBehaviour
@@ -34,7 +31,6 @@ public class PathFinder : MonoBehaviour
         if (grid.ContainsKey(StartCoordinate))
         {
             startNode = grid[StartCoordinate];
-            currentSearchNode = startNode;
         }
 
         if (grid.ContainsKey(endCoordinate))
@@ -50,7 +46,12 @@ public class PathFinder : MonoBehaviour
 
     public List<Node> GetNewPath()
     {
-        BreadthFirstSearch();
+        return GetNewPath(startCoordinate);
+    }
+
+    public List<Node> GetNewPath(Vector2Int EnemyCoords)
+    {
+        BreadthFirstSearch(EnemyCoords);
         return BuildPath();
     }
 
@@ -78,17 +79,18 @@ public class PathFinder : MonoBehaviour
     }
 
 
-    private void BreadthFirstSearch()
+    private void BreadthFirstSearch(Vector2Int coordinates)
     {
         toExplore.Clear();
         reached.Clear();
         gridManager.ClearNodes(); //TO remove all the past information
 
-        startNode.isWalkable = true;
+        Node startNodeEnemy = grid[coordinates];
+        startNodeEnemy.isWalkable = true;
         endNode.isWalkable = true;
 
         bool isRunning = true;
-        AddNode(startNode, null); //As the previous node would be null
+        AddNode(startNodeEnemy, null); //As the previous node would be null
 
         while (toExplore.Count > 0 && isRunning)
         {
@@ -140,5 +142,10 @@ public class PathFinder : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void BroadCastPathChange()
+    {
+        BroadcastMessage("CalculatePath",false,SendMessageOptions.DontRequireReceiver);
     }
 }
