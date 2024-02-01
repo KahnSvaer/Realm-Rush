@@ -33,7 +33,6 @@ public class CoordinateLabeler : MonoBehaviour
         {
             DisplayCoordinates();
             UpdateName();
-            label.enabled = true;
         }
         SetLabelColor();
         ToggleLabels();
@@ -66,11 +65,11 @@ public class CoordinateLabeler : MonoBehaviour
         }
         else if(node.isPath)
         {
-            label.color = exploredColor;
+            label.color = pathColor;
         }
         else if(node.isExplored)
         {
-            label.color = pathColor;
+            label.color = exploredColor;
         }
         else
         {
