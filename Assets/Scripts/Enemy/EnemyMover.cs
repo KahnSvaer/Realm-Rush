@@ -7,7 +7,10 @@ public class EnemyMover : MonoBehaviour
 {
     [SerializeField] [Range(0f, 5f)]float speed = 1f;
 
-    List<Waypoint> path = new();
+    List<Node> path = new();
+
+    GridManager gridManager;
+    PathFinder pathFinder;
 
     private void OnEnable() {
         FindPath();
@@ -15,31 +18,28 @@ public class EnemyMover : MonoBehaviour
         StartCoroutine(FollowPath());
     }
 
+    private void Awake() {
+        gridManager = FindObjectOfType<GridManager>();
+        pathFinder = FindObjectOfType<PathFinder>();
+    }
+
     private void FindPath()
     {
         path.Clear();
-        Transform pathHolder = GameObject.FindWithTag("Path").transform;
-        foreach (Transform child in pathHolder)
-        {
-            Waypoint waypoint = child.GetComponent<Waypoint>();
-            if (waypoint!=null)
-            {
-                path.Add(waypoint);
-            }
-        }
+        path = pathFinder.GetNewPath(); //This seems to be correct
     }
 
     private void ReturnToPath()
     {
-        transform.position = path[0].transform.position;
+        transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinate);
     }//TO make the start at the starting position of the path
 
     private IEnumerator FollowPath()
     {
-        foreach (Waypoint waypoint in path)
+        for (int i = 0; i < path.Count ; i++)
         {
             Vector3 startPosition = transform.position;
-            Vector3 endPosition = waypoint.transform.position;
+            Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
             float travelPercentage = 0f;
 
             transform.LookAt(endPosition);

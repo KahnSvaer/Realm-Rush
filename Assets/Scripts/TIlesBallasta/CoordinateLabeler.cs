@@ -48,8 +48,10 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void DisplayCoordinates()
     {
-        coordinates.x = Mathf.RoundToInt(transform.position.x / UnityEditor.EditorSnapSettings.move.x);
-        coordinates.y = Mathf.RoundToInt(transform.position.z / UnityEditor.EditorSnapSettings.move.z); //Note this can't be used for the final build
+        if (gridManager == null) { return; }
+        int unitySnapSize = gridManager.UnitySnapSettings;
+        coordinates.x = Mathf.RoundToInt(transform.position.x / unitySnapSize);
+        coordinates.y = Mathf.RoundToInt(transform.position.z / unitySnapSize); //Note this can't be used for the final build
         label.text = coordinates.x + "," + coordinates.y;
     }
 

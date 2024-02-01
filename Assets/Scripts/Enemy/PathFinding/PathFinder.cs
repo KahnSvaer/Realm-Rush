@@ -1,16 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {   
     [SerializeField] Vector2Int startCoordinate;
+    public Vector2Int StartCoordinate { get {return startCoordinate;}}
+    
     [SerializeField] Vector2Int endCoordinate;
+    public Vector2Int EndCoordinate { get {return endCoordinate;}}
 
     Node startNode;
     Node endNode;
-    [SerializeField] Node currentSearchNode;
+    Node currentSearchNode;
     
     Vector2Int[] directions = {Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left};
     GridManager gridManager;
@@ -27,12 +31,9 @@ public class PathFinder : MonoBehaviour
         {
             grid = gridManager.Grid;
         }
-    }
-
-    private void Start() {
-        if (grid.ContainsKey(startCoordinate))
+        if (grid.ContainsKey(StartCoordinate))
         {
-            startNode = grid[startCoordinate];
+            startNode = grid[StartCoordinate];
             currentSearchNode = startNode;
         }
 
@@ -40,8 +41,17 @@ public class PathFinder : MonoBehaviour
         {
             endNode = grid[endCoordinate];
         }
+    }
 
+    private void Start()
+    {
+        GetNewPath();
+    }
+
+    public List<Node> GetNewPath()
+    {
         BreadthFirstSearch();
+        return BuildPath();
     }
 
     // Start is called before the first frame update
@@ -68,12 +78,17 @@ public class PathFinder : MonoBehaviour
     }
 
 
-    private List<Node> BreadthFirstSearch()
+    private void BreadthFirstSearch()
     {
+        toExplore.Clear();
+        reached.Clear();
+        gridManager.ClearNodes(); //TO remove all the past information
+
+        startNode.isWalkable = true;
+        endNode.isWalkable = true;
+
         bool isRunning = true;
         AddNode(startNode, null); //As the previous node would be null
-
-        Debug.Log(currentSearchNode.coordinates);
 
         while (toExplore.Count > 0 && isRunning)
         {
@@ -84,9 +99,6 @@ public class PathFinder : MonoBehaviour
                 isRunning = false; //To break the loop
             }
         }
-
-        return BuildPath();
-
     }
 
     List<Node> BuildPath()
@@ -97,7 +109,7 @@ public class PathFinder : MonoBehaviour
         {
             path.Add(currentNode);
             currentNode.isPath = true;
-            currentNode = currentNode.isConnectedTo;
+            currentNode = currentNode.ConnectedTo;
         }
         
         path.Reverse();
@@ -107,9 +119,26 @@ public class PathFinder : MonoBehaviour
     
     private void AddNode(Node curr, Node prev)
     {
-        curr.isConnectedTo = prev;
+        curr.ConnectedTo = prev;
         reached.Add(curr.coordinates, curr);
         toExplore.Enqueue(curr);
         curr.isExplored = true;
+    }
+
+    public bool WillBlockPath(Vector2Int coordinates)
+    {
+        if(grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].isWalkable = false;
+            List<Node> newPath = GetNewPath();
+            grid[coordinates].isWalkable = true;
+
+            if (newPath[newPath.Count-1] != endNode) //This works better than the tutorial due to some Update
+            {
+                GetNewPath(); //This line seems to be not working Maybe make it so that enemyObject has a new path list to return back;
+                return true;
+            }
+        }
+        return false;
     }
 }

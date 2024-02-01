@@ -21,7 +21,7 @@ public class ObjectPool : MonoBehaviour
     {   
         for(int i=0; i<enemyNumber;i++)
         {
-            Instantiate(enemyObject, transform).SetActive(false);
+            Instantiate(enemyObject, parent: transform).SetActive(false);
         }
     }
 
